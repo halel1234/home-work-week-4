@@ -82,10 +82,11 @@ class IceCreamWindow(QWidget):
             )
             trend_y = slope * trend_x + intercept
             self.ax.plot(trend_x, trend_y)
+            sign = "+" if intercept >= 0 else "-"
             self.ax.text(
                 0.05,
                 0.95,
-                f"y = {slope:.2f}x {intercept:+.2f}",
+                f"y = {slope:.2f}x {sign} {abs(intercept):.2f}",
                 transform=self.ax.transAxes,
                 verticalalignment="top",
             )
