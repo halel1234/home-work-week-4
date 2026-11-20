@@ -1,11 +1,14 @@
 import sys
 from pathlib import Path
 
+from PySide6.QtCore import QUrl
+from PySide6.QtGui import QDesktopServices
 from PySide6.QtWidgets import (
     QApplication,
     QHBoxLayout,
     QLabel,
     QFileDialog,
+    QMessageBox,
     QPushButton,
     QSpinBox,
     QTableWidget,
@@ -80,13 +83,41 @@ class GradesWindow(QWidget):
         file_name, _ = QFileDialog.getOpenFileName(
             self, "Load CSV File", "", "CSV Files (*.csv)"
         )
-        pass  # my code here
+        self.selected_file = file_name
+        with open(self.selected_file, 'r') as f:
+            self.header = f.readline()
+            for line in f:
+                student_id, grade = line.strip().split(',')
+                self.student_ids.append(student_id)
+                self.original_grades.append(int(grade))
+                self.corrected_grades.append(int(grade))
+
+        self.update_table()
+
 
     def bonus_entered(self):
-        pass  # my code here
+        bonus = self.bonus_spinbox.value()
+
+        for i in range(len(self.original_grades)):
+            new_grade =  self.original_grades[i] + bonus
+            if new_grade > 100:
+                new_grade = 100
+            self.corrected_grades[i] = new_grade
+
+        self.update_table()
 
     def update_clicked(self):
-        pass  # my code here
+
+        with open(self.selected_file, 'w') as f:
+            f.write(self.header)
+            for i in range(len(self.student_ids)):
+                f.write(f"{self.student_ids[i]},{self.corrected_grades[i]}\n")
+
+        if not QDesktopServices.openUrl(QUrl.fromLocalFile(self.selected_file)):
+            QMessageBox.warning(
+                self, "Unable to Open File", "The file was saved but could not be opened."
+            )
+
 
     def about_clicked(self):
         self.about_window.show()
