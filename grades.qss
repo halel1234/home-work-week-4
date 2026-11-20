@@ -1,0 +1,86 @@
+QWidget {
+    background-color: #f4f7fb;
+    color: #233044;
+    font-family: "Segoe UI", "Arial", sans-serif;
+    font-size: 14px;
+}
+
+#gradesWindow,
+#aboutWindow {
+    background-color: #f4f7fb;
+}
+
+#titleLabel {
+    color: #172b4d;
+    font-size: 25px;
+    font-weight: 700;
+    padding: 8px 0;
+}
+
+QPushButton {
+    background-color: #ffffff;
+    border: 1px solid #d5deea;
+    border-radius: 7px;
+    color: #263b59;
+    min-height: 36px;
+    padding: 0 16px;
+}
+
+QPushButton:hover {
+    background-color: #edf3fa;
+    border-color: #a9bad0;
+}
+
+QPushButton:pressed {
+    background-color: #e2eaf4;
+}
+
+#updateButton {
+    background-color: #2764c5;
+    border-color: #2764c5;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+#updateButton:hover {
+    background-color: #1f55aa;
+}
+
+QSpinBox {
+    background-color: #ffffff;
+    border: 1px solid #d5deea;
+    border-radius: 6px;
+    min-height: 34px;
+    padding: 0 8px;
+}
+
+QSpinBox:focus {
+    border-color: #4b83d1;
+}
+
+QTableWidget {
+    background-color: #ffffff;
+    alternate-background-color: #f7f9fc;
+    border: 1px solid #dce4ee;
+    border-radius: 8px;
+    gridline-color: #e6ebf2;
+    selection-background-color: #dce9fb;
+    selection-color: #172b4d;
+}
+
+QHeaderView::section {
+    background-color: #edf2f8;
+    border: none;
+    border-bottom: 1px solid #dce4ee;
+    color: #435570;
+    font-weight: 600;
+    padding: 10px 8px;
+}
+
+QLabel {
+    background: transparent;
+}
+
+QLabel a {
+    color: #2764c5;
+}
