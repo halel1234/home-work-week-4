@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 
+import numpy as np
 from matplotlib.backends.backend_qtagg import (
     FigureCanvasQTAgg as FigureCanvas,
     NavigationToolbar2QT as NavigationToolbar,
@@ -23,6 +24,8 @@ class IceCreamWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.about_window = AboutWindow()
+        self.temperatures = []
+        self.revenues = []
         self.initUI()
 
     def initUI(self):
@@ -61,15 +64,40 @@ class IceCreamWindow(QWidget):
         file_name, _ = QFileDialog.getOpenFileName(
             self, "Load CSV File", "", "CSV Files (*.csv)"
         )
-        pass  # my code here
+        with open(file_name, 'r') as f:
+            next(f)
+            for line in f:
+                temp, revenue = line.strip().split(',')
+                self.temperatures.append(float(temp))
+                self.revenues.append(float(revenue))
+        self.draw_graph()
+
+    def draw_graph(self):
+        self.ax.clear()
+        self.ax.scatter(self.temperatures, self.revenues, s=1)
+        if len(self.temperatures) > 1 and len(self.revenues) > 1:
+            slope, intercept = np.polyfit(self.temperatures, self.revenues, 1)
+            trend_x = np.array(
+                [min(self.temperatures), max(self.temperatures)]
+            )
+            trend_y = slope * trend_x + intercept
+            self.ax.plot(trend_x, trend_y)
+            self.ax.text(
+                0.05,
+                0.95,
+                f"y = {slope:.2f}x {intercept:+.2f}",
+                transform=self.ax.transAxes,
+                verticalalignment="top",
+            )
+        self.ax.spines['top'].set_visible(False)
+        self.ax.spines['right'].set_visible(False)
+        self.ax.set_title('Ice Cream Revenue vs Temperature')
+        self.ax.set_xlabel('Temperature [°C]')
+        self.ax.set_ylabel('Revenue [$]')
+        self.canvas.draw()
 
     def about_clicked(self):
         self.about_window.show()
-
-    def draw_graph(self):
-        # Temporary sample data.
-        self.ax.plot([0, 1, 2, 3, 4], [2, 5, 3, 7, 6])
-        self.canvas.draw()
 
 
 if __name__ == "__main__":
